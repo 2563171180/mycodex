@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>金鑫冷链冰棒管理系统</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div>
+          <p class="eyebrow">沭阳县金鑫冷链</p>
+          <h1>冰棒库存管理系统</h1>
+          <p class="sidebar-copy">
+            管理冷库中的冰棒 SKU、库存预警、库区分布和保质期，帮助您快速了解库存情况。
+          </p>
+        </div>
+        <div class="sidebar-card">
+          <h2>系统能力</h2>
+          <ul>
+            <li>冰棒入库 / 编辑 / 删除</li>
+            <li>低库存和临期预警</li>
+            <li>按库区与关键字筛选</li>
+            <li>库存总量与货值统计</li>
+          </ul>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <section class="hero-card">
+          <div>
+            <p class="eyebrow">董事长驾驶舱</p>
+            <h2>冷库库存总览</h2>
+            <p>为冰棒经营提供一站式库存管理与预警能力。</p>
+          </div>
+          <button id="refreshBtn" class="secondary-btn">刷新数据</button>
+        </section>
+
+        <section class="metrics-grid" id="metricsGrid"></section>
+
+        <section class="content-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">库存档案</p>
+                <h3>冰棒信息维护</h3>
+              </div>
+              <span id="formModeBadge" class="status-badge">新增模式</span>
+            </div>
+            <form id="popsicleForm" class="inventory-form">
+              <input type="hidden" id="recordId" />
+              <div class="form-grid">
+                <label>
+                  冰棒名称
+                  <input id="name" name="name" type="text" placeholder="例如：牛奶雪糕" required />
+                </label>
+                <label>
+                  口味
+                  <input id="flavor" name="flavor" type="text" placeholder="例如：草莓" required />
+                </label>
+                <label>
+                  冷库分区
+                  <input id="storage_zone" name="storage_zone" type="text" placeholder="例如：A-01" required />
+                </label>
+                <label>
+                  当前库存（支）
+                  <input id="quantity" name="quantity" type="number" min="0" required />
+                </label>
+                <label>
+                  单价（元）
+                  <input id="unit_price" name="unit_price" type="number" min="0" step="0.01" required />
+                </label>
+                <label>
+                  最低库存预警值
+                  <input id="min_stock" name="min_stock" type="number" min="0" required />
+                </label>
+                <label>
+                  供应商
+                  <input id="supplier" name="supplier" type="text" placeholder="例如：宿迁冷饮厂" required />
+                </label>
+                <label>
+                  生产日期
+                  <input id="production_date" name="production_date" type="date" required />
+                </label>
+                <label>
+                  到期日期
+                  <input id="expiry_date" name="expiry_date" type="date" required />
+                </label>
+              </div>
+              <label>
+                备注
+                <textarea id="notes" name="notes" rows="4" placeholder="记录特殊说明、促销计划、批次情况等"></textarea>
+              </label>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit">保存冰棒记录</button>
+                <button class="secondary-btn" type="button" id="resetBtn">清空表单</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header filters-header">
+              <div>
+                <p class="eyebrow">库存视图</p>
+                <h3>冰棒列表与预警</h3>
+              </div>
+              <div class="filters">
+                <input id="keywordFilter" type="search" placeholder="搜索名称 / 口味 / 供应商" />
+                <input id="zoneFilter" type="text" placeholder="筛选库区，如 A-01" />
+                <button class="secondary-btn" id="searchBtn">查询</button>
+              </div>
+            </div>
+
+            <div id="zoneCards" class="zone-grid"></div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>名称</th>
+                    <th>口味</th>
+                    <th>库区</th>
+                    <th>库存</th>
+                    <th>单价</th>
+                    <th>供应商</th>
+                    <th>到期日</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="inventoryTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <template id="metricCardTemplate">
+      <article class="metric-card">
+        <p class="metric-label"></p>
+        <strong class="metric-value"></strong>
+        <span class="metric-hint"></span>
+      </article>
+    </template>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
